@@ -19,10 +19,10 @@ type Query {
     ): [User!]! @paginate(defaultCount: 10)
 
     # جلب جميع الأصناف
-    categories: [Category!]! @all
+    categories: [Category!]! @paginate(type: CONNECTION)
 
     # جلب جميع المنتجات
-    products: [Product!]! @all
+    products: [Product!]! @paginate(type: CONNECTION)
 }
 
 type Mutation {
