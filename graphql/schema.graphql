@@ -25,10 +25,6 @@ type Query {
     products: [Product!]! @paginate(type: CONNECTION)
 }
 
-type Mutation {
-    createUser(name: String!, email: String! , password:String!): User @create
-}
-
 "Account of a person who utilizes this application."
 type User {
     "Unique primary key."
@@ -53,6 +49,7 @@ type User {
 type Category {
     id: ID!
     name: String!
+    slug: String!
     description: String
     products: [Product!]! @hasMany
 }
@@ -64,4 +61,23 @@ type Product {
     category: Category @belongsTo
 }
 
+input CreateCategoryInput {
+    name: String!
+    slug: String!
+    description: String
+}
+
+input UpdateCategoryInput {
+    name: String!
+    slug: String!
+    description: String
+}
+
+type Mutation {
+    createUser(name: String!, email: String! , password:String!): User @create
+
+    createCategory(input: CreateCategoryInput! @spread): Category! @create
+    updateCategory(id: ID!, input: UpdateCategoryInput! @spread): Category! @update
+    deleteCategory(id: ID! @whereKey): Category! @delete
+}
 
