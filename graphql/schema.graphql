@@ -20,9 +20,11 @@ type Query {
 
     # جلب جميع الأصناف
     categories: [Category!]! @paginate(type: CONNECTION)
+    category(slug: String! @eq): Category @find
 
     # جلب جميع المنتجات
-    products: [Product!]! @paginate(type: CONNECTION)
+    products(hasCategory: _ @whereHasConditions(columns: ["slug"])): [Product!]! @paginate(type: CONNECTION)
+    product(id: ID! @eq): Product @find
 }
 
 "Account of a person who utilizes this application."
@@ -51,7 +53,7 @@ type Category {
     name: String!
     slug: String!
     description: String
-    products: [Product!]! @hasMany
+    products: [Product!]! @hasMany(type: CONNECTION)
 }
 
 type Product {
@@ -59,6 +61,9 @@ type Product {
     name: String!
     description: String
     category: Category @belongsTo
+    image: String
+    price: Float!
+    rating: Float!
 }
 
 input CreateCategoryInput {
